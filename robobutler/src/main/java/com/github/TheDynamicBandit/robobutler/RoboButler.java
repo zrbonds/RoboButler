@@ -1,6 +1,5 @@
 package com.github.TheDynamicBandit.robobutler;
 
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import org.javacord.api.DiscordApi;
