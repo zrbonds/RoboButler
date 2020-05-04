@@ -1,5 +1,8 @@
 package com.github.TheDynamicBandit.robobutler;
 
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -41,6 +44,32 @@ public class RoboButler {
                 event.getChannel().sendMessage(message);
             }
         });
+        
+        //Reminder Functionality
+        ListenerManager<MessageCreateListener> listenerManager4 = api.addMessageCreateListener(event -> {
+            if (event.getMessageContent().toLowerCase().contains("!remind")){
+            	String[] arguments = event.getMessageContent().split(" ");
+            	int time = -1;
+            	TimeUnit unit = null;
+            	boolean successfulParse = false;
+            	try {
+            		time = Integer.parseInt(arguments[1]);
+            		unit = TimeUnit.valueOf(arguments[2]);
+            		successfulParse = true;
+            	}
+            	catch(IllegalArgumentException | NullPointerException e) {
+            		event.getChannel().sendMessage("I'm not sure what you mean.");
+            	}
+            	if(successfulParse) {
+            		String message = "Understood, Master ";
+                	message += event.getMessage().getAuthor().getName();
+                    event.getChannel().sendMessage(message);
+                    
+            	}
+            	
+            }
+        });
+        
         
     }
 }
