@@ -63,8 +63,9 @@ public class RoboButler {
             		String message = "Understood, Master ";
                 	message += event.getMessage().getAuthor().getName();
                     event.getChannel().sendMessage(message);
-                    
             	}
+            	
+            	//Create the reminder
             	
             }
         });
