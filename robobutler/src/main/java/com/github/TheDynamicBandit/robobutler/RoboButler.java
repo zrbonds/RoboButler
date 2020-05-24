@@ -1,16 +1,22 @@
 package com.github.TheDynamicBandit.robobutler;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutionException;
 
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
-import org.javacord.api.listener.message.MessageCreateListener;
-import org.javacord.api.util.event.ListenerManager;
+
+import com.github.TheDynamicBandit.event.Event;
+
+import com.github.TheDynamicBandit.manager.EventManager;
+import com.github.TheDynamicBandit.reminder.Reminder;
 
 public class RoboButler {
 
 	/** the token of the bot */
-	private static String token = "NjkwNDExNzc0NzM3OTA3NzU0.XnRC8w.UD7xu7LfKcUtrIsPnMdg0wKiEjE";
+	private static String token = "NzEzOTE3MjEwNTI3MDA2NzYy.XsnNeA.w-HEuY-dDcS4UdKyfzVO5vI3bXQ";
+	
+	/** the event manager object */
+	private static EventManager manager;
 	
 	/**
 	 * The main method, it logs the bot in and then creates listeners for the right reactions. 
@@ -21,22 +27,25 @@ public class RoboButler {
     public static void main(String[] args) {
         DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
         
+        System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
+        
         // Greetings Messages
-        ListenerManager<MessageCreateListener> listenerManager1 = api.addMessageCreateListener(event -> {
+        //ListenerManager<MessageCreateListener> listenerManager1 = 
+        api.addMessageCreateListener(event -> {
             if (event.getMessageContent().toLowerCase().contains("good afternoon") && event.getMessageContent().toLowerCase().contains("robobutler")) {
             	String message = "Good Afternoon, Master ";
             	message += event.getMessage().getAuthor().getName();
                 event.getChannel().sendMessage(message);
             }
         });
-        ListenerManager<MessageCreateListener> listenerManager2 = api.addMessageCreateListener(event -> {
+        api.addMessageCreateListener(event -> {
             if (event.getMessageContent().toLowerCase().contains("good morning") && event.getMessageContent().toLowerCase().contains("robobutler")){
             	String message = "Good Morning, Master ";
             	message += event.getMessage().getAuthor().getName();
                 event.getChannel().sendMessage(message);
             }
         });
-        ListenerManager<MessageCreateListener> listenerManager3 = api.addMessageCreateListener(event -> {
+        api.addMessageCreateListener(event -> {
             if ((event.getMessageContent().toLowerCase().contains("sup") || event.getMessageContent().toLowerCase().contains("what's up")) && event.getMessageContent().toLowerCase().contains("robobutler")){
             	String message = "\'Sup\' indeed, Master ";
             	message += event.getMessage().getAuthor().getName();
@@ -44,29 +53,39 @@ public class RoboButler {
             }
         });
         
-        //Reminder Functionality
-        ListenerManager<MessageCreateListener> listenerManager4 = api.addMessageCreateListener(event -> {
-            if (event.getMessageContent().toLowerCase().contains("!remind")){
+        // Reminder Functionality
+        // Format:
+        // !Remind MM/DD/YYYY HH:MM description
+        api.addMessageCreateListener(event -> {
+            if (event.getMessageContent().startsWith("!Remind")) {
             	String[] arguments = event.getMessageContent().split(" ");
-            	int time = -1;
-            	TimeUnit unit = null;
-            	boolean successfulParse = false;
-            	try {
-            		time = Integer.parseInt(arguments[1]);
-            		unit = TimeUnit.valueOf(arguments[2]);
-            		successfulParse = true;
-            	}
-            	catch(IllegalArgumentException | NullPointerException e) {
-            		event.getChannel().sendMessage("I'm not sure what you mean.");
-            	}
-            	if(successfulParse) {
-            		String message = "Understood, Master ";
-                	message += event.getMessage().getAuthor().getName();
-                    event.getChannel().sendMessage(message);
-            	}
+            	//Create and add the meeting
+            	String[] dates = arguments[1].split("/");
+            	int month = Integer.parseInt(dates[0]);
+            	int day = Integer.parseInt(dates[1]);
+            	int year = Integer.parseInt(dates[2]);
+            	String[] times = arguments[2].split(":");
+            	int hour = Integer.parseInt(times[0]);
+            	int min = Integer.parseInt(times[1]);
             	
-            	//Create the reminder
-            	
+            	//Parsing the message from the remainder of the String[] arguments
+            	StringBuffer buffer = new StringBuffer();
+            	for(int i = 3; i < arguments.length; i++) {
+            		buffer.append(arguments[i]);
+            	}
+            	String description = buffer.toString();
+            	Event eventRemind = new Event(day, month, year, hour, min, description);
+            	if(manager.addMeetingToManager(eventRemind)) {
+            		String message = "Reminder created.";
+            		new Reminder(eventRemind.getDate(), event.getMessage().getUserAuthor().get(), event.getChannel(), "Your meeting is starting soon! \n\"" + eventRemind.getDescription() + "\"");
+            		try {
+						event.getChannel().sendMessage(message).get();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+            	}
             }
         });
         

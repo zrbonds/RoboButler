@@ -1,4 +1,4 @@
-package com.github.TheDynamicBandit.Reminder;
+package com.github.TheDynamicBandit.reminder;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -28,6 +28,8 @@ public class Reminder {
 	 * The constructor of the user object
 	 * @param time the time the user is to be messaged
 	 * @param user the user to message
+	 * @param channel the channel to send the message to
+	 * @param messageToSend the message to send at the reminder time
 	 */
 	public Reminder(LocalDateTime time, User user, TextChannel channel, String messageToSend) {
 		this.messageToSend = messageToSend;

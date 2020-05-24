@@ -1,4 +1,4 @@
-package com.github.TheDynamicBandit.InputProcessor;
+package com.github.TheDynamicBandit.inputProcessor;
 
 import java.util.ArrayList;
 
