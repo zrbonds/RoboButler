@@ -1,22 +1,24 @@
 package com.github.TheDynamicBandit.robobutler;
 
-import java.util.concurrent.ExecutionException;
-
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 
 import com.github.TheDynamicBandit.event.Event;
-
 import com.github.TheDynamicBandit.manager.EventManager;
 import com.github.TheDynamicBandit.reminder.Reminder;
 
+/**
+ * RoboButler Bartimus, at your service.
+ * @author TheDynamicBandit
+ *
+ */
 public class RoboButler {
 
 	/** the token of the bot */
 	private static String token = "NzEzOTE3MjEwNTI3MDA2NzYy.XsnNeA.w-HEuY-dDcS4UdKyfzVO5vI3bXQ";
 	
 	/** the event manager object */
-	private static EventManager manager;
+	private static EventManager manager = EventManager.getInstance();
 	
 	/**
 	 * The main method, it logs the bot in and then creates listeners for the right reactions. 
@@ -30,7 +32,8 @@ public class RoboButler {
         System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
         
         // Greetings Messages
-        //ListenerManager<MessageCreateListener> listenerManager1 = 
+        // Useful line:
+        // ListenerManager<MessageCreateListener> listenerManager1 = 
         api.addMessageCreateListener(event -> {
             if (event.getMessageContent().toLowerCase().contains("good afternoon") && event.getMessageContent().toLowerCase().contains("robobutler")) {
             	String message = "Good Afternoon, Master ";
@@ -72,19 +75,16 @@ public class RoboButler {
             	StringBuffer buffer = new StringBuffer();
             	for(int i = 3; i < arguments.length; i++) {
             		buffer.append(arguments[i]);
+            		if(i < arguments.length - 1) {
+            			buffer.append(" ");
+            		}
             	}
             	String description = buffer.toString();
             	Event eventRemind = new Event(day, month, year, hour, min, description);
             	if(manager.addMeetingToManager(eventRemind)) {
             		String message = "Reminder created.";
-            		new Reminder(eventRemind.getDate(), event.getMessage().getUserAuthor().get(), event.getChannel(), "Your meeting is starting soon! \n\"" + eventRemind.getDescription() + "\"");
-            		try {
-						event.getChannel().sendMessage(message).get();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						e.printStackTrace();
-					}
+            		new Reminder(eventRemind.getDate(), event.getMessage().getUserAuthor().get(), event.getChannel(), "\"" + eventRemind.getDescription() + "\"");
+            		event.getChannel().sendMessage(message);
             	}
             }
         });
