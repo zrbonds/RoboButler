@@ -1,8 +1,13 @@
 package com.github.TheDynamicBandit.robobutler;
 
+import java.util.ArrayList;
+
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 
+import com.github.TheDynamicBandit.NLPAgreement.InputProcessor.InputProcessor;
+import com.github.TheDynamicBandit.NLPAgreement.action.Action;
+import com.github.TheDynamicBandit.NLPAgreement.action.HelpAction;
 import com.github.TheDynamicBandit.manager.EventManager;
 
 /**
@@ -18,6 +23,9 @@ public class RoboButlerNLP {
 	/** the event manager object */
 	private static EventManager manager = EventManager.getInstance();
 	
+	/** the list of actions that RoboButler knows how to do */
+	private static ArrayList<Action> actions;
+	
 	/**
 	 * The main method, it logs the bot in and then creates listeners for the right reactions. 
 	 * If the right reactions are found, the right message is printed into the channel.
@@ -28,6 +36,10 @@ public class RoboButlerNLP {
         DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
         
         System.out.println("You can invite the bot by using the following url: " + api.createBotInvite());
+        
+        // Set up all the actions that RoboButler knows
+        actions = new ArrayList<Action>();
+        actions.add(new HelpAction());
         
         // Greetings Messages
         // Useful line:
@@ -54,10 +66,11 @@ public class RoboButlerNLP {
             }
         });
         
+        // The main NLP command, called by !Assistant
         api.addMessageCreateListener(event -> {
         	if(event.getMessageContent().startsWith("!Assistant")) {
-        		
-        		
+        		Action action = InputProcessor.processInput(event, actions);
+        		action.execute(event);
         	}
         });
     }
