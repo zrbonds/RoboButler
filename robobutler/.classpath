@@ -37,5 +37,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/bonds/Downloads/apache-opennlp-1.9.2-bin/apache-opennlp-1.9.2/lib/opennlp-tools-1.9.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/bonds/Downloads/apache-opennlp-1.9.2-bin/apache-opennlp-1.9.2/lib/opennlp-uima-1.9.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
