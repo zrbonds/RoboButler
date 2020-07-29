@@ -81,7 +81,7 @@ public class RoboButler {
             	}
             	String description = buffer.toString();
             	Event eventRemind = new Event(day, month, year, hour, min, description);
-            	if(manager.addMeetingToManager(eventRemind)) {
+            	if(manager.addEventToManager(eventRemind)) {
             		String message = "Reminder created.";
             		new Reminder(eventRemind.getDate(), event.getMessage().getUserAuthor().get(), event.getChannel(), "\"" + eventRemind.getDescription() + "\"");
             		event.getChannel().sendMessage(message);

@@ -2,8 +2,10 @@ package com.github.TheDynamicBandit.NLPAgreement.action;
 
 import org.javacord.api.event.message.MessageCreateEvent;
 
+import com.github.TheDynamicBandit.manager.EventManager;
+
 /**
- * The Help action lists all of the 
+ * The Help action lists all of the commands RoboButler currently knows
  * @author zrbonds
  *
  */
@@ -33,7 +35,7 @@ public class HelpAction extends Action {
 	}
 	
 	@Override
-	public void execute(MessageCreateEvent event) {
+	public void execute(MessageCreateEvent event, EventManager manager) {
 		event.getChannel().sendMessage("I'm still in testing, I can't do anything yet.");
 	}
 

@@ -15,7 +15,7 @@ public class EventManager {
 	/** The list of stored events */
 	private ArrayList<Event> events; 
 	
-	/** The single instance of the meeting manager object,  following the singleton format*/
+	/** The single instance of the event manager object,  following the singleton format*/
 	private static EventManager instance;
 	
 	/**
@@ -39,11 +39,11 @@ public class EventManager {
 	}
 	
 	/**
-	 * Gets a meeting from the list of meetings by its id number
-	 * @param code the id of the desired meeting
-	 * @return the Meeting with the matching id
+	 * Gets a event from the list of events by its id number
+	 * @param code the id of the desired event
+	 * @return the event with the matching id
 	 */
-	public Event getMeetingById(int code) {
+	public Event getEventById(int code) {
 		for(int i = 0; i < events.size(); i++) {
 			if(events.get(i).getId() == code) {
 				return events.get(i);
@@ -53,42 +53,42 @@ public class EventManager {
 	}
 	
 	/**
-	 * Adds a meeting to Manager
-	 * @param meeting the meeting to be added
-	 * @return true if the meeting is added successfully, false otherwise
+	 * Adds a event to Manager
+	 * @param event the event to be added
+	 * @return true if the event is added successfully, false otherwise
 	 */
-	public boolean addMeetingToManager(Event event) {
+	public boolean addEventToManager(Event event) {
 		if(event == null) {
-			System.out.println("Meeting cannot be null");
+			System.out.println("event cannot be null");
 			return false;
 		}
 		if(events.contains(event)) {
-			System.out.println("This meeting is already in the list");
+			System.out.println("This event is already in the list");
 			return false;
 		}
 		return events.add(event);
 	}
 	
 	/**
-	 * Removes the meeting from the Manager
-	 * @param meeting the meeting to be removed
-	 * @return true if the meeting is removed successfully, false otherwise
+	 * Removes the event from the Manager
+	 * @param event the event to be removed
+	 * @return true if the event is removed successfully, false otherwise
 	 */
-	public boolean removeMeetingFromManager(Event event) {
+	public boolean removeEventFromManager(Event event) {
 		return events.remove(event);
 	}
 	
 	/**
-	 * Flushes the meeting data and resets the meeting ID counter
+	 * Flushes the event data and resets the event ID counter
 	 */
-	public void flushMeetingData() {
+	public void flushEventData() {
 		events = new ArrayList<Event>();
 		Event.setIdCounter(0);
 	}
 	
 	/**
-	 * Gets an ArrayList of meeting objects contained within the manager
-	 * @return the list of meetings contained within the manager
+	 * Gets an ArrayList of event objects contained within the manager
+	 * @return the list of events contained within the manager
 	 */
 	public ArrayList<Event> getEvents(){
 		return events;
@@ -96,9 +96,9 @@ public class EventManager {
 	
 	
 	/**
-	 * Gets an ArrayList of meetings on the selected month
+	 * Gets an ArrayList of events on the selected month
 	 * @param monthVal the integer value representing the month
-	 * @return an ArrayList of Meeting objects with the selected month
+	 * @return an ArrayList of event objects with the selected month
 	 */
 	public ArrayList<Event> getEventsByMonth(int monthVal){
 		ArrayList<Event> monthEvents = new ArrayList<Event>();

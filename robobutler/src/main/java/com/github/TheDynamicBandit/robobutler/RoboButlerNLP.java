@@ -70,7 +70,7 @@ public class RoboButlerNLP {
         api.addMessageCreateListener(event -> {
         	if(event.getMessageContent().startsWith("!Assistant")) {
         		Action action = InputProcessor.processInput(event, actions);
-        		action.execute(event);
+        		action.execute(event, manager);
         	}
         });
     }
