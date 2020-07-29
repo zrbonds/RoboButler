@@ -72,6 +72,7 @@ public class AddEventAction extends Action {
 	 * 
 	 * @param message The message from which to extract a date
 	 * @return The LocalDateTime associated with the message
+	 * Citation: https://stackoverflow.com/questions/27182040/how-to-detect-dates-with-opennlp
 	 */
 	public String[] dateExtractor(String message) {
 		// Try to build the models, let us know if something goes fudgy
