@@ -75,12 +75,12 @@ public class InputProcessor {
 	 */
 	public static String[] tokensToLemmas(String[] tokens) {
 		try {
-			InputStream posModelIn = new FileInputStream("en-pos-maxent.bin");
+			InputStream posModelIn = new FileInputStream("src/en-pos-maxent.bin");
 			try {
 				POSModel posModel = new POSModel(posModelIn);
 				POSTaggerME posTagger = new POSTaggerME(posModel);
 				String[] tags = posTagger.tag(tokens);
-				InputStream dictLemmatizer = new FileInputStream("en-lemmatizer.txt");
+				InputStream dictLemmatizer = new FileInputStream("src/en-lemmatizer.dict");
 				DictionaryLemmatizer lemmatizer = new DictionaryLemmatizer(dictLemmatizer);
 				String[] lemmas = lemmatizer.lemmatize(tokens, tags);
 				return lemmas;

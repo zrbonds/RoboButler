@@ -45,7 +45,9 @@ public abstract class Action implements Executable {
 		}
 		// For each keyword in the list
 		for(Keyword keyword : keywords) {
+			// If the lemma list contains the value
 			if(lemmaList.contains(keyword.getLemma())) {
+				// Increment the confidence value
 				confidenceValue += keyword.getWeight();
 			}
 		}

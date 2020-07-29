@@ -34,7 +34,7 @@ public class HelpAction extends Action {
 	
 	@Override
 	public void execute(MessageCreateEvent event) {
-		event.getChannel().sendMessage("Here's what I can do");
+		event.getChannel().sendMessage("I'm still in testing, I can't do anything yet.");
 	}
 
 }
