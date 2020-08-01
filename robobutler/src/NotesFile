@@ -3,3 +3,8 @@ Step 1) Consider what you want the command to execute
 Step 2) Create a new SomethingAction class that extends Action
 Step 3) Add all associated Keyword objects and weights in the constructor
 Step 4) Define the execute method
+
+Removing OpenNLP and grafting CoreNLP
+// Files that still need fixed:
+1) InputProcessor
+2) AddEventAction
