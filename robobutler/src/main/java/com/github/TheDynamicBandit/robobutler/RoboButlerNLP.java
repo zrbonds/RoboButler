@@ -73,7 +73,7 @@ public class RoboButlerNLP {
         
         // The main NLP command, called by !Assistant
         api.addMessageCreateListener(event -> {
-        	if(event.getMessageContent().startsWith("!Assistant") && event.getMessage().getUserAuthor().get().getName().equals(user)) {
+        	if(event.getMessageContent().startsWith("!RoboButler")) {
         		Action action = InputProcessor.processInput(event, actions);
         		action.execute(event, manager);
         	}

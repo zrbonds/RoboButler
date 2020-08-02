@@ -1,19 +1,14 @@
 package com.github.TheDynamicBandit.NLPAgreement.InputProcessor;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.javacord.api.event.message.MessageCreateEvent;
 
+import com.github.TheDynamicBandit.NLPAgreement.CoreNLPUtil.CoreNLPUtil;
 import com.github.TheDynamicBandit.NLPAgreement.action.Action;
 
-import opennlp.tools.lemmatizer.DictionaryLemmatizer;
-import opennlp.tools.postag.POSModel;
-import opennlp.tools.postag.POSTaggerME;
-import opennlp.tools.tokenize.WhitespaceTokenizer;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.pipeline.CoreDocument;
 
 /**
  * The input processor converts the event message to an Action object
@@ -35,8 +30,7 @@ public class InputProcessor {
 		
 		// Tokenize the event command
 		String sentence = event.getMessageContent();
-		String[] tokens = whitespaceTokenize(sentence);
-		String[] lemmas = tokensToLemmas(tokens);
+		String[] lemmas = sentenceToLemmas(sentence);
 		
 		// Update the confidence values of the actions
 		for(Action action: actions) {
@@ -59,37 +53,17 @@ public class InputProcessor {
 	}
 	
 	/**
-	 * Uses the whitespace tokenizer to split a sentence up into tokens
-	 * @param sentence the sentence to split up
-	 * @return the array of tokens
-	 */
-	public static String[] whitespaceTokenize(String sentence) {
-		WhitespaceTokenizer tokenizer = WhitespaceTokenizer.INSTANCE;
-		return tokenizer.tokenize(sentence);
-	}
-	
-	/**
-	 * Takes the whitespace tokenized array and converts it to the word lemmas
-	 * @param tokens the whitespace tokenized sentence
+	 * Converts a sentence to lemmas
+	 * @param sentence the sentence to be lemmatized
 	 * @return an array of lemmas
 	 */
-	public static String[] tokensToLemmas(String[] tokens) {
-		try {
-			InputStream posModelIn = new FileInputStream("src/en-pos-maxent.bin");
-			try {
-				POSModel posModel = new POSModel(posModelIn);
-				POSTaggerME posTagger = new POSTaggerME(posModel);
-				String[] tags = posTagger.tag(tokens);
-				InputStream dictLemmatizer = new FileInputStream("src/en-lemmatizer.dict");
-				DictionaryLemmatizer lemmatizer = new DictionaryLemmatizer(dictLemmatizer);
-				String[] lemmas = lemmatizer.lemmatize(tokens, tags);
-				return lemmas;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+	public static String[] sentenceToLemmas(String sentence) {
+		CoreDocument doc = CoreNLPUtil.getLemmaDoc(sentence);
+		String[] lemmas = new String[doc.tokens().size()];
+		int placementIndex = 0;
+		for(CoreLabel label : doc.tokens()) {
+			lemmas[placementIndex++] = label.lemma();
 		}
-		return null;
+		return lemmas;
 	}
 }
