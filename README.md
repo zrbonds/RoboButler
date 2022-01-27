@@ -1,5 +1,7 @@
 # RoboButler
-RoboButler has three primary functions. First, RoboButler must feel real. It responds to good morning and afternoon messages, 
-with the appropriate time of day. It also response to certain reactions and strings. Secondly, RoboButler is a webscraper. 
-I should be able to extract information from a couple news sources from RoboButler through the chat. Finally, RoboButler should 
-coordinate calendars for each of the discord's members. Every user should have a calendar, upon which reminders can be placed.
+
+RoboButler is a Discord digital assistant.
+RoboButler is powered by the Stanford CoreNLP package, which allows it to parse plaintext user statements and then
+associate them with one of RoboButler's commands. RoboButler's current functionality is to set reminders for users, and then
+message them at the appropriate time. Commands in progress include providing weather information and moderating a suite of 
+chat based games (most notably, Ultimate Werewolf, the code for which exists in another bot).
