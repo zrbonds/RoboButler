@@ -15,7 +15,7 @@ import com.github.TheDynamicBandit.reminder.Reminder;
 public class RoboButler {
 
 	/** the token of the bot */
-	private static String token = "NzEzOTE3MjEwNTI3MDA2NzYy.XsnNeA.w-HEuY-dDcS4UdKyfzVO5vI3bXQ";
+	private static String token = "";
 	
 	/** the event manager object */
 	private static EventManager manager = EventManager.getInstance();
